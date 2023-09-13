@@ -14,6 +14,14 @@
             <div>
                 <label for="name">Nom de l'utilisateur</label>
                 <input type="text" id="name" name="name" required />
+                <div>
+                    <label for="nameSelector">Type d'utilisateur</label>
+                    <select id="nameSelector">
+                        <option value="admin">Administrateur</option>
+                        <option value="teacher">Professeur</option>
+                        <option value="student">Étudiant</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <a href="#">Ajouter un utilisateur</a>
