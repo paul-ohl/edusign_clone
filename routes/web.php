@@ -4,6 +4,7 @@ use App\Http\Controllers\AddUser;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +48,7 @@ Route::get('/list', function () {
 });
 
 Route::get('/session', function () {
-    return view('session', ['users' => User::all() ]);
+    return view('session', ['users' => User::all(), 'user' => Auth::user()]);
 });
 
 Route::get('/profile', function (Request $request) {

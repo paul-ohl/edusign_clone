@@ -12,8 +12,10 @@
 
         <h1>Panneau d'enseignement</h1>
 
+        @if($user->status == 'professeur')
         <div id="qr-code"></div>
 
+        @endif
         <div>
             <p>Liste des élèves</p>
             <table border="1">
