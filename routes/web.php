@@ -27,14 +27,17 @@ Route::get('/admin', [UsersController::class, 'create']);
 Route::post('/admin', [UsersController::class, 'store']);
 Route::delete('/users/{user}', [UsersController::class, 'destroy']);
 
+Route::get('/login', function () {
+    return view('login', ['users' => User::all() ]);
+})->name('login');
+
+Route::get('/admin', function () {
+    return view('admin', ['users' => User::all() ]);
+});
 
 Route::get('/sign', function () {
     return view('sign');
-});
-
-Route::get('/login', function () {
-    return view('login', ['users' => User::all() ]);
-});
+})->middleware('auth');
 
 Route::post('/user/login', function(Request $request) {
     $userId = $request->input('user');
@@ -48,10 +51,10 @@ Route::get('/user/logout', function(Request $request) {
 
 Route::get('/session', function () {
     return view('session', ['users' => User::all(), 'user' => Auth::user()]);
-});
+})->middleware('auth');
 
 Route::get('/profile', function (Request $request) {
-    return view('profile', ['current_user' => Auth::user() ]);
-});
+    return view('profile', ['user' => Auth::user() ]);
+})->middleware('auth');
 
 
