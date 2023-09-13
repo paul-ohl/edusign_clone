@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddUser;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\SessionSignController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -36,9 +37,7 @@ Route::get('/admin', function () {
     return view('admin', ['users' => User::all() ]);
 });
 
-Route::get('/sign', function () {
-    return view('sign');
-})->middleware('auth');
+Route::get('/sign/{session_id}', [SessionSignController::class, 'store'])->middleware('auth');
 
 Route::post('/user/login', function(Request $request) {
     $userId = $request->input('user');

@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Session_sign', function(Blueprint $table){
-        $table->id();
-        $table->string('userid');
-        $table->string('session_id');
-        });
+        Schema::create('session_sign', function(Blueprint $table){
+            $table->id();
+            $table->string('user_id');
+            $table->string('session_id');
+            $table->timestamps();
+        }
+        );
     }
 
     /**
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('session_sign');
     }
 };
