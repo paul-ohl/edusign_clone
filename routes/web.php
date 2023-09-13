@@ -46,12 +46,11 @@ Route::get('/list', function () {
     return view('list', ['users' => User::all() ]);
 });
 
-Route::get('/teacher', function () {
-    return view('teacher', ['users' => User::all() ]);
+Route::get('/session', function () {
+    return view('session', ['users' => User::all() ]);
 });
 
 Route::get('/profile', function (Request $request) {
-    // return view('profile', ['current_user' => $request->session()->all() ]);
     return view('profile', ['current_user' => Auth::user() ]);
 });
 

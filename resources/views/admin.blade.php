@@ -19,15 +19,15 @@
                     <label for="status">Type d'utilisateur</label>
                     <select id="status" name="status">
                         <option value="admin">Administrateur</option>
-                        <option value="teacher">Professeur</option>
-                        <option value="student">Étudiant</option>
+                        <option value="professeur">Professeur</option>
+                        <option value="etudiant">Étudiant</option>
                     </select>
                 </div>
             </div>
             <div>
             <input type="submit" value="ajouter">
             </div>
-</form> 
+</form>
 <div>
 <h1>Liste</h1>
 
