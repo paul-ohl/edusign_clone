@@ -9,8 +9,17 @@
     </head>
     <body>
         <body>
-            <h1>Tu es {{ $current_user->name }}</h1>
+            <h1>Tu es {{ $user->name }}</h1>
             <h3>Bravo</h3>
+            @if($user->status == 'professeur')
+            <form method="POST" action="{{route('sessions.store')}}">
+                @csrf
+                <div>
+                    <input type="submit" value="Créer une nouvelle session!">
+                </div>
+            </form>
+            @endif
+
             <a href="/user/logout">Se déconnecter</a>
         </body>
     </body>

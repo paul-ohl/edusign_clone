@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddUser;
+use App\Http\Controllers\SessionsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -47,9 +48,11 @@ Route::get('/list', function () {
     return view('list', ['users' => User::all() ]);
 });
 
-Route::get('/session', function () {
+Route::get('/sessions', function () {
     return view('session', ['users' => User::all(), 'user' => Auth::user()]);
 })->middleware('auth');
+
+Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');
 
 Route::get('/profile', function (Request $request) {
     return view('profile', ['user' => Auth::user() ]);
