@@ -24,7 +24,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::get('/admin', [UsersController::class, 'create']);
 Route::post('/admin', [UsersController::class, 'store']);
 Route::delete('/users/{user}', [UsersController::class, 'destroy']);
@@ -51,14 +50,8 @@ Route::get('/user/logout', function(Request $request) {
     return redirect('/login');
 });
 
-Route::get('/list', function () {
-    return view('list', ['users' => User::all() ]);
-});
-
 Route::get('/sessions/{id}', function (string $id) {
-    // dd(Session::find($id));
     $session = Session::find($id);
-    // dd($session->owner()->get()->first());
     return view('session', [
         'users' => User::all(),
         'user' => Auth::user(),
