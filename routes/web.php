@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Models\User;
 
 /*
@@ -30,10 +31,25 @@ Route::get('/login', function () {
     return view('login', ['users' => User::all() ]);
 });
 
+Route::post('/user/login', function(Request $request) {
+    $userId = $request->input('user');
+    Auth::loginUsingId($userId);
+    return redirect('/profile');
+});
+Route::get('/user/logout', function(Request $request) {
+    $request->session()->flush();
+    return redirect('/login');
+});
+
 Route::get('/list', function () {
     return view('list', ['users' => User::all() ]);
 });
 
 Route::get('/teacher', function () {
     return view('teacher', ['users' => User::all() ]);
+});
+
+Route::get('/profile', function (Request $request) {
+    // return view('profile', ['current_user' => $request->session()->all() ]);
+    return view('profile', ['current_user' => Auth::user() ]);
 });

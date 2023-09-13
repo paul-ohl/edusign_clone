@@ -10,17 +10,16 @@
     <body>
         <body>
             <h1>Connexion</h1>
-            <div>
-                <label for="nameSelector">Selectionnez votre utilisateur:</label>
-                <select id="nameSelector">
+            <form method="POST" action="/user/login">
+                @csrf
+                <label for="user">Selectionnez votre utilisateur:</label>
+                <select name="user" id="user">
                     @foreach ($users as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                     @endforeach
                 </select>
-            </div>
-            <div>
-                <a href="#">Se connecter</a>
-            </div>
+                <input type="submit" value="Se connecter">
+            </form>
         </body>
     </body>
 </html>
