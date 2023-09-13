@@ -30,6 +30,10 @@ Route::get('/login', function () {
     return view('login', ['users' => User::all() ]);
 });
 
+Route::get('/list', function () {
+    return view('list', ['users' => User::all() ]);
+});
+
 Route::get('/teacher', function () {
     return view('teacher', ['users' => User::all() ]);
 });
