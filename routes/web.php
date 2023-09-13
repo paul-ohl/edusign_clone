@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddUser;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -21,9 +22,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin', function () {
-    return view('admin', ['users' => User::all() ]);
-});
+
+Route::get('/admin', [UsersController::class, 'create']);
+Route::post('/admin', [UsersController::class, 'store']);
+Route::delete('/users/{user}', [UsersController::class, 'destroy']);
+
 
 Route::get('/sign', function () {
     return view('sign');
@@ -43,10 +46,6 @@ Route::get('/user/logout', function(Request $request) {
     return redirect('/login');
 });
 
-Route::get('/list', function () {
-    return view('list', ['users' => User::all() ]);
-});
-
 Route::get('/session', function () {
     return view('session', ['users' => User::all(), 'user' => Auth::user()]);
 });
@@ -55,4 +54,4 @@ Route::get('/profile', function (Request $request) {
     return view('profile', ['current_user' => Auth::user() ]);
 });
 
-Route::post('/admin', [AddUser::class, 'store'])->name('users.store');
+

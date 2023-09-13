@@ -22,11 +22,13 @@
                 <tr>
                     <th>Nom</th>
                     <th>Status de présence</th>
+                    
                 </tr>
                 @foreach ($users as $user)
                 <tr>
                     <td>{{ $user->name }}</td>
                     <td>✅</td>
+                    
                 </tr>
                 @endforeach
             </table>

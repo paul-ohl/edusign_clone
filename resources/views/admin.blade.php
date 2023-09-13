@@ -42,11 +42,24 @@
         <tr>
             <td>{{ $user->name }}</td>
             <td>{{ $user->status }}</td>
+            <td>
+                <form method="POST" action="/users/{{$user->id}}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Supprimer</button>
+                </form>
+            </td>
         </tr>
         @endforeach
     </table>
 </div>
 </div>
+
+@if (session('success'))
+    <div >
+        {{ session('success') }}
+    </div>
+@endif
 
     </body>
 </html>
