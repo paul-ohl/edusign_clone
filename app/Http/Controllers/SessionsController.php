@@ -32,11 +32,9 @@ class SessionsController extends Controller
 
         $session = new Session();
         $session->owner_id = $owner_id;
-    
+
 
         $session->save();
-
-        dd($session);
 
         return redirect('/sessions'); // + $session->id);
     }
