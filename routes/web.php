@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,9 +27,9 @@ Route::get('/sign', function () {
 });
 
 Route::get('/login', function () {
-    return view('login', ['users' => [ 'James', 'John', 'Jack', 'Jane', 'Janessa', 'Jocko', 'Jackartha' ] ]);
+    return view('login', ['users' => User::all() ]);
 });
 
 Route::get('/teacher', function () {
-    return view('teacher', ['users' => [ 'James', 'John', 'Jack', 'Jane', 'Janessa', 'Jocko', 'Jackartha' ] ]);
+    return view('teacher', ['users' => User::all() ]);
 });

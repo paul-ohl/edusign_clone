@@ -14,7 +14,7 @@
                 <label for="nameSelector">Selectionnez votre utilisateur:</label>
                 <select id="nameSelector">
                     @foreach ($users as $user)
-                    <option value="{{ $user }}">{{ $user }}</option>
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
                     @endforeach
                 </select>
             </div>

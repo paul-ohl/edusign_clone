@@ -23,7 +23,7 @@
                 </tr>
                 @foreach ($users as $user)
                 <tr>
-                    <td>{{ $user }}</td>
+                    <td>{{ $user->name }}</td>
                     <td>✅</td>
                 </tr>
                 @endforeach
