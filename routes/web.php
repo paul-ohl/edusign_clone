@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddUser;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -20,7 +21,7 @@ Route::get('/', function () {
 });
 
 Route::get('/admin', function () {
-    return view('admin');
+    return view('admin', ['users' => User::all() ]);
 });
 
 Route::get('/sign', function () {
@@ -53,3 +54,5 @@ Route::get('/profile', function (Request $request) {
     // return view('profile', ['current_user' => $request->session()->all() ]);
     return view('profile', ['current_user' => Auth::user() ]);
 });
+
+Route::post('/admin', [AddUser::class, 'store'])->name('users.store');
