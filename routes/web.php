@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddUser;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -21,6 +22,11 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/admin', [UsersController::class, 'create']);
+Route::post('/admin', [UsersController::class, 'store']);
+Route::delete('/users/{user}', [UsersController::class, 'destroy']);
 
 Route::get('/login', function () {
     return view('login', ['users' => User::all() ]);
@@ -58,4 +64,4 @@ Route::get('/profile', function (Request $request) {
     return view('profile', ['user' => Auth::user() ]);
 })->middleware('auth');
 
-Route::post('/admin', [AddUser::class, 'store'])->name('users.store');
+
