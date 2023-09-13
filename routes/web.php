@@ -50,10 +50,6 @@ Route::get('/user/logout', function(Request $request) {
     return redirect('/login');
 });
 
-Route::get('/list', function () {
-    return view('list', ['users' => User::all() ]);
-});
-
 Route::get('/sessions', function () {
     return view('session', ['users' => User::all(), 'user' => Auth::user()]);
 })->middleware('auth');

@@ -26,9 +26,10 @@
                 </tr>
                 @foreach ($users as $user)
                 <tr>
+                    @if($user->status == 'etudiant')
                     <td>{{ $user->name }}</td>
                     <td>✅</td>
-                    
+                    @endif
                 </tr>
                 @endforeach
             </table>
