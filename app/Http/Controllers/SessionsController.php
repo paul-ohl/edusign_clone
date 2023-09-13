@@ -36,7 +36,7 @@ class SessionsController extends Controller
 
         $session->save();
 
-        return redirect('/sessions'); // + $session->id);
+        return redirect('/sessions/'.$session->id);
     }
 
     /**

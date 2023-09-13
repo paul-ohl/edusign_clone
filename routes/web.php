@@ -6,6 +6,7 @@ use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Session;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -54,8 +55,16 @@ Route::get('/list', function () {
     return view('list', ['users' => User::all() ]);
 });
 
-Route::get('/sessions', function () {
-    return view('session', ['users' => User::all(), 'user' => Auth::user()]);
+Route::get('/sessions/{id}', function (string $id) {
+    // dd(Session::find($id));
+    $session = Session::find($id);
+    // dd($session->owner()->get()->first());
+    return view('session', [
+        'users' => User::all(),
+        'user' => Auth::user(),
+        'owner' => $session->owner()->get()->first(),
+        'session' => $session,
+    ]);
 })->middleware('auth');
 
 Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');
@@ -63,5 +72,3 @@ Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.s
 Route::get('/profile', function (Request $request) {
     return view('profile', ['user' => Auth::user() ]);
 })->middleware('auth');
-
-
