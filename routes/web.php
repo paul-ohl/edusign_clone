@@ -77,12 +77,17 @@ Route::get('/sessions/{id}', function (string $id) {
         'session' => $session,
     ]);
 })->middleware('auth');
+Route::get('/sessions/sign/{id}', function($id){
 
-
-
+    return(response()->json([
+        ['name'=>'matthias', 'presence'=>true],
+        ['name'=>'paul', 'presence'=>false],
+    ]));
+});
 
 Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');
 Route::get('/sessions', function () { return redirect('/profile'); });
+
 
 Route::get('/profile', function (Request $request) {
     return view('profile', [

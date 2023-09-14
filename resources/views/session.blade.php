@@ -28,12 +28,21 @@
 </div>
 
 <script type="text/javascript">
-let text = "{{ env('APP_URL') }}:8000/sign/{{ $session->id }}"
-function generateQRCode() {
-    let qrcodeContainer = document.getElementById("qr-code");
-    qrcodeContainer.innerHTML = "";
-    new QRCode(qrcodeContainer, text);
-}
-generateQRCode()
+    let text = "http://{{ env('APP_URL') }}:8000/sign/{{ $session->id }}"
+    function generateQRCode() {
+        let qrcodeContainer = document.getElementById("qr-code");
+        qrcodeContainer.innerHTML = "";
+        new QRCode(qrcodeContainer, text);
+    }
+    generateQRCode()
+    
+    function refreshPageData(){
+        fetch('/sessions/sign/{{$session->id}}').then(response => response.json()).then(data =>{
+            console.log('data : ')
+            console.log(data)
+        })
+    }
+    
+    setInterval(refreshPageData, 3000)
 </script>
 @include('footer')
