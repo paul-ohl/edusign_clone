@@ -60,6 +60,7 @@ Route::get('/sessions/{id}', function (string $id) {
 })->middleware('auth');
 
 Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');
+Route::get('/sessions', function () { return redirect('/profile'); });
 
 Route::get('/profile', function (Request $request) {
     return view('profile', [
