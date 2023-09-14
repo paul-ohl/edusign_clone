@@ -37,7 +37,12 @@ Route::get('/admin', function () {
     return view('admin', ['users' => User::all() ]);
 });
 
-Route::get('/sign/{session_id}', [SessionSignController::class, 'store'])->middleware('auth');
+Route::get('/sign/{id}', function (string $id){
+    $session = Session::find($id);
+    return view('sign', ['id' => $id] );
+})->middleware('auth');
+
+Route::post('/sign/{id}', [SessionSignController::class, 'store']);
 
 Route::post('/user/login', function(Request $request) {
     $userId = $request->input('user');
@@ -58,6 +63,9 @@ Route::get('/sessions/{id}', function (string $id) {
         'session' => $session,
     ]);
 })->middleware('auth');
+
+
+
 
 Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');
 
