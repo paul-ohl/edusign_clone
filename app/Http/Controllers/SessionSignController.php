@@ -16,7 +16,6 @@ class SessionSignController extends Controller
         $sessionSign = new SessionSign();
         $sessionSign->user_id = $user_id;
         $sessionSign->session_id = $session_id;
-        dd($sessionSign);
         $sessionSign->save();
 
         return redirect('/sessions/'.$session_id);

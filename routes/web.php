@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Session;
+use App\Models\SessionSign;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -60,9 +61,12 @@ Route::get('/user/logout', function(Request $request) {
 
 Route::get('/sessions/{id}', function (string $id) {
     $session = Session::find($id);
+    $users_that_signed = SessionSign::where('session_id', $id)->pluck('user_id');
+    // dd($users_that_signed);
     return view('session', [
         'users' => User::all(),
         'user' => Auth::user(),
+        'users_that_signed' => $users_that_signed,
         'owner' => $session->owner()->get()->first(),
         'session' => $session,
     ]);

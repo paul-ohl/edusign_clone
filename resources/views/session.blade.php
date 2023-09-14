@@ -23,13 +23,12 @@
                 <tr>
                     <th>Nom</th>
                     <th>Status de présence</th>
-
                 </tr>
                 @foreach ($users as $user)
                 <tr>
                     @if($user->status == 'etudiant')
                     <td>{{ $user->name }}</td>
-                    <td>✅</td>
+                    <td>{{ $users_that_signed->contains($user->id) ? "✅" : "❌" }}</td>
                     @endif
                 </tr>
                 @endforeach
@@ -37,7 +36,7 @@
         </div>
 
         <script type="text/javascript">
-        let text = "http://10.104.131.154:8000/sign"
+        let text = "{{ env('APP_URL') }}:8000/sign/{{ $session->id }}"
         function generateQRCode() {
             let qrcodeContainer = document.getElementById("qr-code");
             qrcodeContainer.innerHTML = "";
