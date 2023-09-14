@@ -68,7 +68,11 @@ Route::get('/sessions/{id}', function (string $id) {
 
 
 Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');
+Route::get('/sessions', function () { return redirect('/profile'); });
 
 Route::get('/profile', function (Request $request) {
-    return view('profile', ['user' => Auth::user() ]);
+    return view('profile', [
+        'user' => Auth::user(),
+        'sessions' => Session::where('owner_id', Auth::user()->id)->get()
+    ]);
 })->middleware('auth');
