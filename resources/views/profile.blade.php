@@ -1,42 +1,34 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@include('header')
+<h1>Tu es {{ $user->name }}</h1>
+<h3>Bravo</h3>
+@if($user->status == 'professeur')
+<form method="POST" action="{{route('sessions.store')}}">
+    @csrf
+    <div class="input-field col s12">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Créer une nouvelle session!</button>
+    </div>
+</form>
+@endif
 
-        <title>Page de profil</title>
-
-    </head>
-    <body>
-        <body>
-            <h1>Tu es {{ $user->name }}</h1>
-            <h3>Bravo</h3>
-            @if($user->status == 'professeur')
-            <form method="POST" action="{{route('sessions.store')}}">
-                @csrf
-                <div>
-                    <input type="submit" value="Créer une nouvelle session!">
-                </div>
-            </form>
-
+@if($user->status == 'professeur')
+<div>
+    @if(sizeof($sessions) > 0)
+    <ul class="collection with-header">
+        <li class="collection-header"><h4>Liste des sessions</h4></li>
+        @foreach ($sessions as $session)
+        <li class="collection-item">
             <div>
-                @if(sizeof($sessions) > 0)
-                <p>Liste des sessions</p>
-                <table border="1">
-                    <tr>
-                        <th>ID de salle</th>
-                    </tr>
-                    @foreach ($sessions as $session)
-                    <tr>
-                        <td><a href="/sessions/{{ $session->id }}">{{ $session->id }}</a></td>
-                    </tr>
-                    @endforeach
-                </table>
-                @endif
+                Session {{ $session->id }}
+                <a href="/sessions/{{ $session->id }}" class="secondary-content">
+                    <i class="material-icons">send</i>
+                </a>
             </div>
-            @endif
+        </li>
+        @endforeach
+    </table>
+    @endif
+</div>
+@endif
 
-            <a href="/user/logout">Se déconnecter</a>
-        </body>
-    </body>
-</html>
+<a href="/user/logout" class="waves-effect waves-light btn red">Se déconnecter</a>
+@include('footer')

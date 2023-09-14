@@ -1,65 +1,56 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Panneau d'administration</title>
-
-    </head>
-    <body>
-        <form method="POST" action="/admin">
-            @csrf
-            <h1>Panneau d'administration</h1>
-            <p>Don't be evil hahaha.</p>
-            <div>
-                <label for="name">Nom de l'utilisateur</label>
-                <input type="text" id="name" name="name" required />
-                <div>
-                    <label for="status">Type d'utilisateur</label>
-                    <select id="status" name="status">
-                        <option value="admin">Administrateur</option>
-                        <option value="professeur">Professeur</option>
-                        <option value="etudiant">Étudiant</option>
-                    </select>
-                </div>
-            </div>
-            <div>
-            <input type="submit" value="ajouter">
-            </div>
+@include('header')
+<h1>Panneau d'administration</h1>
+<p>Don't be evil hahaha.</p>
+<form method="POST" action="/admin">
+    @csrf
+    <div class="row">
+        <div class="input-field col s12">
+            <label for="name">Nom de l'utilisateur</label>
+            <input type="text" id="name" name="name" required />
+        </div>
+        <div class="input-field col s12">
+            <select name="status">
+                <option selected value="etudiant">Étudiant</option>
+                <option value="admin">Administrateur</option>
+                <option value="professeur">Professeur</option>
+            </select>
+            <label>Type d'utilisateur</label>
+        </div>
+        <div class="input-field col s12">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Ajouter</button>
+        </div>
+    </div>
 </form>
 <div>
-<h1>Liste</h1>
+    <h2>Liste de tout le monde</h2>
 
-<div>
-    <p>Liste de tout le monde</p>
-    <table border="1">
-        <tr>
-            <th>Nom</th>
-            <th>Status</th>
-        </tr>
-        @foreach ($users as $user)
-        <tr>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->status }}</td>
-            <td>
-                <form method="POST" action="/users/{{$user->id}}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Supprimer</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </table>
-</div>
+    <div>
+        <table border="1">
+            <tr>
+                <th>Nom</th>
+                <th>Status</th>
+            </tr>
+            @foreach ($users as $user)
+            <tr>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->status }}</td>
+                <td>
+                    <form method="POST" action="/users/{{$user->id}}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </table>
+    </div>
 </div>
 
 @if (session('success'))
-    <div >
-        {{ session('success') }}
-    </div>
+<div >
+    {{ session('success') }}
+</div>
 @endif
 
-    </body>
-</html>
+@include('footer')
