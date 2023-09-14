@@ -24,41 +24,37 @@
     generateQRCode()
     
     function refreshPageData(){
-        fetch('/sessions/sign/{{$session->id}}').then(response => response.json()).then(data =>{
+        fetch('/sessions/sign/{{$session->id}}').then(response => response.json()).then(data =>
+        {
             console.log('data : ')
             console.log(data)
             const tableContainer = document.getElementById("table-container");
             
-            for(i=0; i<data.length;i++){
-                const tableHTML = `
-            <table border="1">
-                <tr>
-                    <th>Colonne 1</th>
-                    <th>Colonne 2</th>
-                </tr>
-                <tr>
-                    <td>Nom</td>
-                    <td>Statut de présence</td>
-                </tr>
-                <tr>
-                    <td>${data[i].name}</td>
-                    <td>${data[i].signed}</td>
-                </tr>
-                <tr>
-                    <td>${data[i+1].name}</td>
-                    <td>${data[i+1].signed}</td>
-                </tr>
-            </table>
+            
+        
+        let tableHTML = `
+        <table border="1">
+            <tr>
+                <th>Nom</th>
+                <th>Statut de présence</th>
+            </tr>
             `;
-            
-            tableContainer.innerHTML = tableHTML
+
+            for(i=0; i<data.length; i++)
+            {
+                tableHTML+= `<tr>
+                <td>${data[i].name}</td>
+                <td>${data[i].signed}</td>
+            </tr>`
             }
-            
+            tableHTML+= `</table>`
+            tableContainer.innerHTML = tableHTML
         })
     }
+        
+        
+        
+        setInterval(refreshPageData, 3000)
+    </script>
+    @include('footer')
     
-    
-    
-    setInterval(refreshPageData, 3000)
-</script>
-@include('footer')
