@@ -22,16 +22,16 @@
         new QRCode(qrcodeContainer, text);
     }
     generateQRCode()
-    
+
     function refreshPageData(){
         fetch('/sessions/sign/{{$session->id}}').then(response => response.json()).then(data =>
         {
             console.log('data : ')
             console.log(data)
             const tableContainer = document.getElementById("table-container");
-            
-            
-        
+
+
+
         let tableHTML = `
         <table border="1">
             <tr>
@@ -44,17 +44,17 @@
             {
                 tableHTML+= `<tr>
                 <td>${data[i].name}</td>
-                <td>${data[i].signed}</td>
+                <td>${data[i].signed ? "✅" : "❌"}</td>
             </tr>`
             }
             tableHTML+= `</table>`
             tableContainer.innerHTML = tableHTML
         })
     }
-        
-        
-        
+
+
+
         setInterval(refreshPageData, 3000)
     </script>
     @include('footer')
-    
+
