@@ -44,6 +44,9 @@ Route::get('/admin', function () {
 
 Route::get('/sign/{id}', function (string $id){
     $session = Session::find($id);
+    if ($session == null) {
+        abort(404);
+    }
     return view('sign', ['id' => $id] );
 })->middleware('auth');
 
@@ -61,6 +64,9 @@ Route::get('/user/logout', function(Request $request) {
 
 Route::get('/sessions/{id}', function (string $id) {
     $session = Session::find($id);
+    if ($session == null) {
+        abort(404);
+    }
     $users_that_signed = SessionSign::where('session_id', $id)->pluck('user_id');
     // dd($users_that_signed);
     return view('session', [
