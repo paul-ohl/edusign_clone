@@ -30,6 +30,10 @@ Route::post('/admin', [UsersController::class, 'store']);
 Route::delete('/users/{user}', [UsersController::class, 'destroy']);
 
 Route::get('/login', function () {
+    if(!session()->has('url.intended'))
+    {
+        session(['url.intended' => url()->previous()]);
+    }
     return view('login', ['users' => User::all() ]);
 })->name('login');
 
@@ -42,7 +46,7 @@ Route::get('/sign/{session_id}', [SessionSignController::class, 'store'])->middl
 Route::post('/user/login', function(Request $request) {
     $userId = $request->input('user');
     Auth::loginUsingId($userId);
-    return redirect('/profile');
+    return redirect(session()->get('url.intended'));
 });
 Route::get('/user/logout', function(Request $request) {
     $request->session()->flush();
