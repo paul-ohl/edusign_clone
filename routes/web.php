@@ -68,7 +68,6 @@ Route::get('/sessions/{id}', function (string $id) {
         abort(404);
     }
     $users_that_signed = SessionSign::where('session_id', $id)->pluck('user_id');
-    // dd($users_that_signed);
     return view('session', [
         'users' => User::all(),
         'user' => Auth::user(),
@@ -78,11 +77,16 @@ Route::get('/sessions/{id}', function (string $id) {
     ]);
 })->middleware('auth');
 Route::get('/sessions/sign/{id}', function($id){
-
-    return(response()->json([
-        ['name'=>'matthias', 'presence'=>true],
-        ['name'=>'paul', 'presence'=>false],
-    ]));
+    $students = User::where('status', 'etudiant')->select('id', 'name')->get();
+    $users_that_signed = SessionSign::where('session_id', $id)->pluck('user_id');
+    foreach ($students as $user) {
+        if ($users_that_signed->contains($user->id)) {
+            $user->signed = true;
+        } else {
+            $user->signed = false;
+        }
+    }
+    return response()->json($students);
 });
 
 Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');
