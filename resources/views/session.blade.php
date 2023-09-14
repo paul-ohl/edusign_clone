@@ -23,17 +23,17 @@ function generateQRCode() {
 }
 generateQRCode()
 
-function refreshPageData(){
+function refreshPageData() {
     fetch('/sessions/sign/{{$session->id}}').then(response => response.json()).then(data => {
         const tableContainer = document.getElementById("table-container");
 
-        let tableHTML = '
-            <table border="1">
+        let tableHTML = `
+        <table border="1">
             <tr>
-            <th>Nom</th>
-            <th>Statut de présence</th>
+                <th>Nom</th>
+                <th>Statut de présence</th>
             </tr>
-            ';
+        `;
 
         for(i=0; i<data.length; i++) {
             tableHTML+= `<tr>
@@ -47,6 +47,7 @@ function refreshPageData(){
 }
 
 setInterval(refreshPageData, 3000)
+refreshPageData()
 </script>
 @include('footer')
 
