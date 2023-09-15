@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddUser;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\SessionSignController;
 use App\Http\Controllers\UsersController;
@@ -10,7 +11,7 @@ use App\Models\User;
 use App\Models\Session;
 use App\Models\SessionSign;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Group;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -74,6 +75,7 @@ Route::get('/sessions/{id}', function (string $id) {
         'users_that_signed' => $users_that_signed,
         'owner' => $session->owner()->get()->first(),
         'session' => $session,
+        'groups' => Group::all(),
     ]);
 })->middleware('auth');
 Route::get('/sessions/sign/{id}', function($id){
@@ -99,3 +101,5 @@ Route::get('/profile', function (Request $request) {
         'sessions' => Session::where('owner_id', Auth::user()->id)->get()
     ]);
 })->middleware('auth');
+
+Route::post('/groups', [GroupController::class, 'CreateGroups']);

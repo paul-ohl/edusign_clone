@@ -22,6 +22,14 @@
     </div>
 </form>
 <div>
+    <div>
+        Créer un groupe (n°) : 
+        <form method="POST" action="/groups"> 
+            @csrf
+            <input id="number" type="number" name="idNumber"value="0" />
+            <input type="submit">
+        </form>
+    </div>
     <h2>Liste de tout le monde</h2>
 
     <div>
