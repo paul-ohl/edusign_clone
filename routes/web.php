@@ -4,12 +4,13 @@ use App\Http\Controllers\AddUser;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\SessionSignController;
 use App\Http\Controllers\UsersController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Session;
 use App\Models\SessionSign;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,10 +45,24 @@ Route::get('/admin', function () {
 
 Route::get('/sign/{id}', function (string $id){
     $session = Session::find($id);
+    $request_ts = now()->timestamp;
+    $client_hash = request('hash');
+    $offset = request('offset');
     if ($session == null) {
         abort(404);
+    } else if ($client_hash == null || $offset == null) {
+        abort(401);
     }
-    return view('sign', ['id' => $id] );
+    $request_closest_ts = floor($request_ts / $session->interval) * $session->interval + $offset;
+    $request_previous_ts = $request_closest_ts - $session->interval;
+    $server_hash = base64_encode(hex2bin(hash('sha1', $session->key.strval($request_closest_ts))));
+    $server_hash_previous = base64_encode(hex2bin(hash('sha1', $session->key.strval($request_previous_ts))));
+    // dd($client_hash, $server_hash, $server_hash_previous);
+    if ($client_hash == $server_hash || $client_hash == $server_hash_previous) {
+        return view('sign', ['id' => $id] );
+    } else {
+        abort(401);
+    }
 })->middleware('auth');
 
 Route::post('/sign/{id}', [SessionSignController::class, 'store']);
@@ -87,6 +102,17 @@ Route::get('/sessions/sign/{id}', function($id){
         }
     }
     return response()->json($students);
+});
+Route::get('/sessions/get-key/{id}', function($id) {
+    $session = Session::find($id);
+    if ($session == null) {
+        abort(404);
+    }
+    $interval = request('refresh-interval');
+    $session->key = Str::random(10);
+    $session->interval = 10;
+    $session->save();
+    return response()->json($session->key);
 });
 
 Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');

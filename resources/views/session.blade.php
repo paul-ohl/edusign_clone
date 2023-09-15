@@ -14,8 +14,19 @@
     <div id="table-container"> </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript" src="{{ URL::asset('js/qrcode.js') }}"></script>
 <script type="text/javascript">
+let baseURL = "http://{{ env('APP_URL') }}:8000/sign/{{ $session->id }}"
+let qrCodeRefreshInterval = 10 // in seconds
+
+fetch(`/sessions/get-key/{{$session->id}}?refresh-interval=${qrCodeRefreshInterval}`)
+    .then(response => response.json())
+    .then(key => {
+        generateCode(key)
+        setInterval(generateCode, qrCodeRefreshInterval * 1000, key)
+    })
+
 function refreshPageData() {
     fetch('/sessions/sign/{{$session->id}}').then(response => response.json()).then(data => {
         const tableContainer = document.getElementById("table-container");
