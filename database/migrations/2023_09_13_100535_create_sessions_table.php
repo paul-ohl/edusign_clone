@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->integer('owner_id');
+            $table->foreign('SessionGroup')->references('id')->on('groups');
             $table->timestamps();
         });
     }
