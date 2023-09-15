@@ -5,7 +5,6 @@ function displayQRCode(url) {
 }
 
 function generateCode(key) {
-    console.log(key);
     const timestamp = Math.ceil(Date.now() / 1000)
     const offset = timestamp % qrCodeRefreshInterval
     const hash = CryptoJS.SHA1(`${key}${timestamp}`)

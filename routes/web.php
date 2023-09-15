@@ -40,6 +40,10 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::get('/admin', function () {
+    $admin_count = User::where('status', 'admin')->get()->count();
+    if ($admin_count > 0 && Auth::user()->status != 'admin') {
+        abort(401);
+    }
     return view('admin', ['users' => User::all() ]);
 });
 
