@@ -14,15 +14,8 @@
     <div id="table-container"> </div>
 </div>
 
+<script type="text/javascript" src="{{ URL::asset('js/qrcode.js') }}"></script>
 <script type="text/javascript">
-let text = "http://{{ env('APP_URL') }}:8000/sign/{{ $session->id }}"
-function generateQRCode() {
-    let qrcodeContainer = document.getElementById("qr-code");
-    qrcodeContainer.innerHTML = "";
-    new QRCode(qrcodeContainer, text);
-}
-generateQRCode()
-
 function refreshPageData() {
     fetch('/sessions/sign/{{$session->id}}').then(response => response.json()).then(data => {
         const tableContainer = document.getElementById("table-container");
@@ -46,7 +39,7 @@ function refreshPageData() {
     })
 }
 
-setInterval(refreshPageData, 3000)
+setInterval(refreshPageData, 5000)
 refreshPageData()
 </script>
 @include('footer')
