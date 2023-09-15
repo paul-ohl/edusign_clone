@@ -8,4 +8,10 @@
 - [ ] Le QR code se rafraîchit
     - Cadence de 10 secondes.
     - L'utilisateur devrait pouvoir se connecter et signer après expiration du QR code s'il a scanné le QR code au bon moment.
-- [ ] 
+- [ ] Les sessions peuvent être archivées
+    - Plus personne ne peut signer
+    - Le QR code n'est plus affiché
+- [ ] Protection des signatures
+    - Un utilisateur ne peut pas signer 2 fois
+    - il ne doit pas signer s'il n'est pas sur la session
+    - il ne doit pas signer s'il n'est pas un étudiant
