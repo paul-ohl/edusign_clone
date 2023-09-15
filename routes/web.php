@@ -43,27 +43,39 @@ Route::get('/admin', function () {
     return view('admin', ['users' => User::all() ]);
 });
 
-Route::get('/sign/{id}', function (string $id){
+Route::get('/sign/{id}', function (Request $request, string $id){
     $session = Session::find($id);
+    if ($session == null) {
+        abort(404);
+    }
+    if ($request->session()->has('qrcode-key') && $request->session()->get('qrcode-key') == $session->key) {
+        return view('sign', ['id' => $id]);
+    }
     $request_ts = now()->timestamp;
     $client_hash = request('hash');
     $offset = request('offset');
-    if ($session == null) {
-        abort(404);
-    } else if ($client_hash == null || $offset == null) {
+    if ($client_hash == null || $offset == null || $session->archived) {
         abort(401);
     }
     $request_closest_ts = floor($request_ts / $session->interval) * $session->interval + $offset;
     $request_previous_ts = $request_closest_ts - $session->interval;
-    $server_hash = base64_encode(hex2bin(hash('sha1', $session->key.strval($request_closest_ts))));
-    $server_hash_previous = base64_encode(hex2bin(hash('sha1', $session->key.strval($request_previous_ts))));
-    // dd($client_hash, $server_hash, $server_hash_previous);
-    if ($client_hash == $server_hash || $client_hash == $server_hash_previous) {
-        return view('sign', ['id' => $id] );
-    } else {
+    // $request_next_ts = $request_closest_ts + $session->interval;
+    $server_hash = hash('sha1', $session->key.strval($request_closest_ts));
+    $server_hash_previous = hash('sha1', $session->key.strval($request_previous_ts));
+    // $server_hash_next = hash('sha1', $session->key.strval($request_next_ts));
+    if ($client_hash != $server_hash
+        && $client_hash != $server_hash_previous) {
+        // && $client_hash != $server_hash_next) {
+        // var_dump($client_hash, $server_hash, $server_hash_previous, $server_hash_next, $session->key);
         abort(401);
     }
-})->middleware('auth');
+    $request->session()->put('qrcode-key', $session->key);
+    if (Auth::check()) {
+        return view('sign', ['id' => $id]);
+    } else {
+        return redirect('/login');
+    }
+});
 
 Route::post('/sign/{id}', [SessionSignController::class, 'store']);
 
@@ -103,16 +115,35 @@ Route::get('/sessions/sign/{id}', function($id){
     }
     return response()->json($students);
 });
+
 Route::get('/sessions/get-key/{id}', function($id) {
     $session = Session::find($id);
-    if ($session == null) {
+    if ($session == null || $session->archived) {
         abort(404);
+    }
+    if (Auth::user()->status != 'professeur') {
+        abort(401);
     }
     $interval = request('refresh-interval');
     $session->key = Str::random(10);
     $session->interval = 10;
     $session->save();
     return response()->json($session->key);
+});
+
+Route::get('/sessions/archive/{id}', function($id) {
+    $session = Session::find($id);
+    if ($session == null) {
+        abort(404);
+    }
+    $session_owner = $session->owner()->get()->first();
+    $current_user_id = Auth::id();
+    if ($session_owner->id != $current_user_id) {
+        abort(401);
+    }
+    $session->archived = true;
+    $session->save();
+    return redirect('/sessions/'.$id);
 });
 
 Route::post('/sessions', [SessionsController::class, 'store'])->name('sessions.store');

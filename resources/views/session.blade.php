@@ -4,16 +4,22 @@
 <h1>Session {{ $session->id }}</h1>
 <h2>Professeur: {{ $owner->name }}</h2>
 
-@if($user->status == 'professeur')
+@if($session->archived)
+<p>Session archived</p>
+@endif
+
+@if($user->status == 'professeur' && !$session->archived)
 <div class="center">
     <div id="qr-code"></div>
 </div>
+<a href='/sessions/archive/{{ $session->id }}'>Archiver la session</a>
 @endif
 <div>
     <h2>Liste des élèves</h2>
     <div id="table-container"> </div>
 </div>
 
+@if($user->status == 'professeur' && !$session->archived)
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript" src="{{ URL::asset('js/qrcode.js') }}"></script>
 <script type="text/javascript">
@@ -27,6 +33,9 @@ fetch(`/sessions/get-key/{{$session->id}}?refresh-interval=${qrCodeRefreshInterv
         setInterval(generateCode, qrCodeRefreshInterval * 1000, key)
     })
 
+</script>
+@endif
+<script type="text/javascript">
 function refreshPageData() {
     fetch('/sessions/sign/{{$session->id}}').then(response => response.json()).then(data => {
         const tableContainer = document.getElementById("table-container");
